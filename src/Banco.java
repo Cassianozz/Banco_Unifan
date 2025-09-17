@@ -12,7 +12,47 @@ public class Banco {
     }
 
     public static void operacoes(){
-        //Kaique vai implementar
+        System.out.println("\n=== MENU DO BANCO ===");
+        System.out.println("1 - Criar Conta");
+        System.out.println("2 - Depositar");
+        System.out.println("3 - Sacar");
+        System.out.println("4 - Transferir");
+        System.out.println("5 - Listar Contas");
+        System.out.println("6 - Extrato");
+        System.out.println("7 - Sair");
+
+        System.out.print("Escolha uma opção: ");
+
+        int operacao = input.nextInt();
+
+        switch (operacao){
+            case 1:
+                criarConta();
+                break;
+            case 2:
+                depositar();
+                break;
+            case 3:
+                sacar();
+                break;
+            case 4:
+                transferir();
+                break;
+            case 5:
+                listarContas();
+                break;
+            case 6:
+                extrato();
+                break;
+            case 7:
+                System.out.println("Até logo!");
+                System.exit(0);
+
+            default:
+                System.out.printf("Opçao invalida!");
+                operacoes();
+                break;
+        }
     }
 
     public static void criarConta() {
