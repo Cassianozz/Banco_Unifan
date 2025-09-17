@@ -16,7 +16,37 @@ public class Banco {
     }
 
     public static void criarConta() {
-        //Ribeiro vai implementar
+        
+       public static void criarConta() {
+        System.out.print("\nNome: ");
+        String nome = input.next();
+
+        System.out.print("\nCPF: ");
+        String cpf = input.next();
+
+        System.out.print("\nEmail: ");
+        String email = input.next();
+
+        Pessoa pessoa = new Pessoa(nome, cpf, email);
+
+        System.out.println("\nEscolha o tipo da conta: ");
+        System.out.println("1 - Conta Corrente");
+        System.out.println("2 - Conta Poupança");
+        int tipo = input.nextInt();
+
+        Conta conta;
+        if (tipo == 1) {
+            conta = new ContaCorrente(pessoa);
+        } else {
+            conta = new ContaPoupanca(pessoa);
+        }
+
+        contasBancarias.add(conta);
+        System.out.println("Sua conta foi criada com sucesso!");
+
+        operacoes();
+    }
+
     }
 
     private static Conta encontrarConta(int numeroConta){
