@@ -20,8 +20,15 @@ public class Banco {
     }
 
     private static Conta encontrarConta(int numeroConta){
-        //Thiago vai implementar
-        return null; 
+        Conta conta = null;
+        if(contasBancarias.size() > 0){
+            for(Conta c: contasBancarias) {
+                if(c.getNumeroConta() == numeroConta){
+                    conta = c;
+                }
+            }
+        }
+        return conta;
     }
 
     public static void depositar() {
@@ -37,7 +44,14 @@ public class Banco {
     }
 
     public static void listarContas(){
-        //Thiago vai implementar
+        if(contasBancarias.size() > 0){
+            for(Conta conta: contasBancarias){
+                System.out.printf(String.valueOf(conta));
+            }
+        } else {
+            System.out.printf("Não há contas!");
+        }
+        operacoes();
     }
 
     public static void extrato() {
