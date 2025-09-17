@@ -1,3 +1,8 @@
+import models.Cliente;
+import models.Conta;
+import models.ContaCorrente;
+import models.ContaPoupanca;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -72,15 +77,59 @@ public class Banco {
     }
 
     public static void depositar() {
-        //Thiago vai implementar
+        System.out.printf("Numero da conta: ");
+        int numeroConta = input.nextInt();
+
+        Conta conta = encontrarConta(numeroConta);
+
+        if (conta != null){
+            System.out.printf("Qual o valor deseja depositar? ");
+            Double valorDeposito = input.nextDouble();
+            conta.depositar(valorDeposito);
+        } else {
+            System.out.printf("A conta não foi encontrada!");
+        }
+        operacoes();
     }
 
     public static void sacar() {
-         //Thiago vai implementar
+        System.out.printf("Numero da conta: ");
+        int numeroConta = input.nextInt();
+
+        Conta conta = encontrarConta(numeroConta);
+
+        if (conta != null){
+            System.out.printf("Qual o valor deseja Sacar? ");
+            Double valorSaque = input.nextDouble();
+            conta.sacar(valorSaque);
+        } else {
+            System.out.printf("A conta não foi encontrada!");
+        }
+        operacoes();
     }
 
     public static void transferir() {
-         //Thiago vai implementar
+        System.out.printf("Numero da Conta do Remetente: ");
+        int numeroContaRemetente = input.nextInt();
+
+        Conta contaRemetente = encontrarConta(numeroContaRemetente);
+
+        if (contaRemetente != null){
+            System.out.printf("Informe o numero da Conta do Destinatario: ");
+            int numeroContaDestinatario = input.nextInt();
+
+            Conta contaDestinatario = encontrarConta(numeroContaDestinatario);
+
+            if (contaDestinatario != null){
+                System.out.printf("Informe o valor da transferencia: ");
+                double valor = input.nextDouble();
+
+                contaRemetente.transferir(contaDestinatario, valor);
+            }
+        } else {
+            System.out.printf("Conta para transferencia não encontrada");
+        }
+        operacoes();
     }
 
     public static void listarContas(){
