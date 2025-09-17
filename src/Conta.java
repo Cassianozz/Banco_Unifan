@@ -1,100 +1,65 @@
+import utilitarios.Utils;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Conta {
-    private static int contador = 0;
-    private final int id;
-    private final Cliente cliente;
-    private double saldo;
-    private boolean ativa;
+
+    private static int contadorDeContas = 1;
+
+    private int numeroConta;
+    private Cliente cliente;
+    private Double saldo = 0.0;
+    private List<String> extrato;
 
     public Conta(Cliente cliente) {
-        this.id = ++contador;
+        this.numeroConta = contadorDeContas;
         this.cliente = cliente;
-        this.saldo = 0.0;
-        this.ativa = true;
+        contadorDeContas += 1;
+        this.extrato = new ArrayList<>();
+        registrarMovimento("Conta criada com sucesso!");
     }
 
-    public int getId(){ return id; }
-    public Cliente getCliente() { return cliente; }
-    public double getSaldo() { return saldo; }
-    public boolean isAtiva() { return ativa; }
-
-    protected void setSaldo(double saldo) { this.saldo = saldo; }
-    public void setAtiva(boolean ativa) { this.ativa = ativa; }
-
-    public abstract boolean sacar(double valor);
-    public abstract boolean depositar(double valor);
-    public abstract boolean transferir(double valor, Conta destino);
-
-    @Override
-    public String toString() {
-        return String.format("Conta #%d - %s - Saldo: R$ %.2f",
-                                id, cliente.getNome(), saldo);
-    }
-}
-
-class ContaCorrente extends Conta {
-    private double limite;
-
-    public ContaCorrente(Cliente cliente) {
-        super(cliente);
-        this.limite = 1000.00;
+    public int getNumeroConta() {
+        return numeroConta;
     }
 
-    public ContaCorrente(Cliente cliente, double limite) {
-        super(cliente);
-        this.limite = limite;
+    public void setNumeroConta(int numeroConta) {
+        this.numeroConta = numeroConta;
     }
 
-    public double getLimite() { return limite; }
-    public void setLimite(double limite) {this.limite = limite; }
-
-    @Override
-    public boolean sacar(double valor) {
-        return false;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    @Override
-    public boolean depositar(double valor) {
-        return false;
+    public void setPessoa(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    @Override
-    public boolean transferir(double valor, Conta destino) {
-        return false;
+    public Double getSaldo() {
+        return saldo;
     }
 
-    @Override
-    public String toString() {
-        return String.format("==== Informações da Conta ====\nTipo: Conta Corrente\nid: %d\nNome do proprietario: %s\nLimite da conta: R$ %.2f",
-                getId(), getCliente().getNome(), limite);
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
     }
 
-}
-
-class ContaPoupanca extends Conta {
-
-    public ContaPoupanca(Cliente cliente) {
-        super(cliente);
+    public String toString(){
+        return "\nNumero da conta: " + this.getNumeroConta() +
+         "\nNome: " + this.cliente.getNome() +
+         "\nCPf: " + this.cliente.getCpf() +
+         "\nEmail: " + this.cliente.getEmail() +
+         "\nSaldo: " + Utils.doubleToString(this.getSaldo()) +
+                "\n";
+    }
+    private void registrarMovimento(String descricao) {
+        extrato.add(descricao);
     }
 
-    @Override
-    public boolean sacar(double valor) {
-        return false;
-    }
-
-    @Override
-    public boolean depositar(double valor) {
-        return false;
-    }
-
-    @Override
-    public boolean transferir(double valor, Conta destino) {
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("==== Informações da Conta ====\nTipo: Conta Poupança\nid: %d\nNome do proprietario: %s",
-                getId(), getCliente().getNome());
+    public void imprimirExtrato() {
+        System.out.println("\n=== Extrato da Conta " + numeroConta + " ===");
+        for (String movimento : extrato) {
+            System.out.println(movimento);
+        }
+        System.out.println("Saldo atual: R$ " + saldo);
     }
 }
-

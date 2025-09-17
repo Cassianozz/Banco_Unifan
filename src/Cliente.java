@@ -1,13 +1,8 @@
 public class Cliente {
-
+    private static int counter = 1;
     private String nome;
     private String cpf;
     private String email;
-
-
-    public Cliente() {
-    }
-
 
     public Cliente(String nome, String cpf, String email) {
         this.nome = nome;
@@ -38,15 +33,6 @@ public class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    // Método para exibir informações
-    public void exibirInfo() {
-        System.out.println("=== Dados do Cliente ===");
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Email: " + email);
-        System.out.println("========================");
     }
 
 
