@@ -1,3 +1,5 @@
+package models;
+
 public class Cliente {
     private static int counter = 1;
     private String nome;
@@ -38,6 +40,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente [Nome=" + nome + ", CPF=" + cpf + ", Email=" + email + "]";
+        return "models.Cliente [Nome=" + nome + ", CPF=" + cpf + ", Email=" + email + "]";
     }
 }

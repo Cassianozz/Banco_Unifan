@@ -1,3 +1,8 @@
+import models.Cliente;
+import models.Conta;
+import models.ContaCorrente;
+import models.ContaPoupanca;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,7 +17,47 @@ public class Banco {
     }
 
     public static void operacoes(){
-        //Kaique vai implementar
+        System.out.println("\n=== MENU DO BANCO ===");
+        System.out.println("1 - Criar Conta");
+        System.out.println("2 - Depositar");
+        System.out.println("3 - Sacar");
+        System.out.println("4 - Transferir");
+        System.out.println("5 - Listar Contas");
+        System.out.println("6 - Extrato");
+        System.out.println("7 - Sair");
+
+        System.out.print("Escolha uma opção: ");
+
+        int operacao = input.nextInt();
+
+        switch (operacao){
+            case 1:
+                criarConta();
+                break;
+            case 2:
+                depositar();
+                break;
+            case 3:
+                sacar();
+                break;
+            case 4:
+                transferir();
+                break;
+            case 5:
+                listarContas();
+                break;
+            case 6:
+                extrato();
+                break;
+            case 7:
+                System.out.println("Até logo!");
+                System.exit(0);
+
+            default:
+                System.out.printf("Opçao invalida!");
+                operacoes();
+                break;
+        }
     }
 
     public static void criarConta() {
@@ -62,15 +107,59 @@ public class Banco {
     }
 
     public static void depositar() {
-        //Thiago vai implementar
+        System.out.printf("Numero da conta: ");
+        int numeroConta = input.nextInt();
+
+        Conta conta = encontrarConta(numeroConta);
+
+        if (conta != null){
+            System.out.printf("Qual o valor deseja depositar? ");
+            Double valorDeposito = input.nextDouble();
+            conta.depositar(valorDeposito);
+        } else {
+            System.out.printf("A conta não foi encontrada!");
+        }
+        operacoes();
     }
 
     public static void sacar() {
-         //Thiago vai implementar
+        System.out.printf("Numero da conta: ");
+        int numeroConta = input.nextInt();
+
+        Conta conta = encontrarConta(numeroConta);
+
+        if (conta != null){
+            System.out.printf("Qual o valor deseja Sacar? ");
+            Double valorSaque = input.nextDouble();
+            conta.sacar(valorSaque);
+        } else {
+            System.out.printf("A conta não foi encontrada!");
+        }
+        operacoes();
     }
 
     public static void transferir() {
-         //Thiago vai implementar
+        System.out.printf("Numero da Conta do Remetente: ");
+        int numeroContaRemetente = input.nextInt();
+
+        Conta contaRemetente = encontrarConta(numeroContaRemetente);
+
+        if (contaRemetente != null){
+            System.out.printf("Informe o numero da Conta do Destinatario: ");
+            int numeroContaDestinatario = input.nextInt();
+
+            Conta contaDestinatario = encontrarConta(numeroContaDestinatario);
+
+            if (contaDestinatario != null){
+                System.out.printf("Informe o valor da transferencia: ");
+                double valor = input.nextDouble();
+
+                contaRemetente.transferir(contaDestinatario, valor);
+            }
+        } else {
+            System.out.printf("Conta para transferencia não encontrada");
+        }
+        operacoes();
     }
 
     public static void listarContas(){
