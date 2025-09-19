@@ -61,8 +61,6 @@ public class Banco {
     }
 
     public static void criarConta() {
-        
-       public static void criarConta() {
         System.out.print("\nNome: ");
         String nome = input.next();
 
@@ -72,7 +70,7 @@ public class Banco {
         System.out.print("\nEmail: ");
         String email = input.next();
 
-        Pessoa pessoa = new Pessoa(nome, cpf, email);
+        Cliente pessoa = new Cliente(nome, cpf, email);
 
         System.out.println("\nEscolha o tipo da conta: ");
         System.out.println("1 - Conta Corrente");
@@ -90,7 +88,7 @@ public class Banco {
         System.out.println("Sua conta foi criada com sucesso!");
 
         operacoes();
-    }
+
 
     }
 
