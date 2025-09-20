@@ -1,9 +1,11 @@
 package models;
 
-import  java.text.DecimalFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 
 public abstract class Conta {
 
@@ -14,12 +16,17 @@ public abstract class Conta {
     private Double saldo = 0.0;
     private List<String> extrato;
 
+    private String numeroCartao;
+
     public Conta(Cliente cliente) {
         this.numeroConta = contadorDeContas;
         this.cliente = cliente;
         contadorDeContas += 1;
         this.extrato = new ArrayList<>();
-        registrarMovimento("models.Conta criada com sucesso!");
+        this.numeroCartao = this.gerarNumeroCartao();
+        registrarMovimento("Conta criada com sucesso!");
+
+
     }
 
     public int getNumeroConta() {
@@ -34,7 +41,7 @@ public abstract class Conta {
         return cliente;
     }
 
-    public void setPessoa(Cliente cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
@@ -46,12 +53,18 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
+    public String getNumeroCartao() { return this.numeroCartao; }
+
     public String toString(){
-        return "\nNumero da conta: " + this.getNumeroConta() +
-         "\nNome: " + this.cliente.getNome() +
-         "\nCPf: " + this.cliente.getCpf() +
-         "\nEmail: " + this.cliente.getEmail() +
-         "\nSaldo: " + Utils.doubleToString(this.getSaldo()) +
+
+        return "\n╔══════════════════════════════════════╗" +
+         "\n Numero da conta: " + this.getNumeroConta() +
+         "\n Nome: " + this.cliente.getNome() +
+         "\n CPf: " + this.cliente.getCpf() +
+         "\n Email: " + this.cliente.getEmail() +
+         "\n Saldo: " + Utils.doubleToString(this.getSaldo()) +
+         "\n Numero do Cartão: " + this.getNumeroCartao() +
+         "\n╚══════════════════════════════════════╝" +
                 "\n";
     }
 
@@ -102,6 +115,21 @@ public abstract class Conta {
         System.out.println("Saldo atual: R$ " + saldo);
     }
 
+    public String gerarNumeroCartao() {
+        Random random = new Random();
+        StringBuilder numeroCartao = new StringBuilder();
+
+        for (int i = 0; i < 16; i++) {
+            int digito = random.nextInt(10);
+            numeroCartao.append(digito);
+            
+            if ((i + 1) % 4 == 0 && i < 15){
+                numeroCartao.append("-");
+            }
+            
+        }
+        return numeroCartao.toString();
+    }   
     public class Utils {
 
         static NumberFormat formatandoValores = new DecimalFormat("R$ #,##00.0");

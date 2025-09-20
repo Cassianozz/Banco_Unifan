@@ -17,16 +17,19 @@ public class Banco {
     }
 
     public static void operacoes(){
-        System.out.println("\n=== MENU DO BANCO ===");
-        System.out.println("1 - Criar Conta");
-        System.out.println("2 - Depositar");
-        System.out.println("3 - Sacar");
-        System.out.println("4 - Transferir");
-        System.out.println("5 - Listar Contas");
-        System.out.println("6 - Extrato");
-        System.out.println("7 - Sair");
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║        MENU DO BANCO         ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.println("║ 1 - Criar Conta              ║");
+        System.out.println("║ 2 - Depositar                ║");
+        System.out.println("║ 3 - Sacar                    ║");
+        System.out.println("║ 4 - Transferir               ║");
+        System.out.println("║ 5 - Listar Contas            ║");
+        System.out.println("║ 6 - Extrato                  ║");
+        System.out.println("║ 7 - Sair                     ║");
+        System.out.println("╚══════════════════════════════╝");
 
-        System.out.print("Escolha uma opção: ");
+        System.out.print("➤ Escolha uma opção: ");
 
         int operacao = input.nextInt();
 
@@ -61,21 +64,45 @@ public class Banco {
     }
 
     public static void criarConta() {
-        System.out.print("\nNome: ");
-        String nome = input.next();
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║        NOVO CADASTRO         ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.print("║ ➤ Nome: ");
+        input.nextLine();
+        String nome = input.nextLine();
+        String cpf ;
+        do {
+            System.out.println("╠══════════════════════════════╣");
+            System.out.print("║ ➤ CPF: ");
+            cpf = input.next();
 
-        System.out.print("\nCPF: ");
-        String cpf = input.next();
+            if (cpf.length() != 11) {
+                System.out.println("║ ➤ CPF inválido, digite novamente.");
+                }
+            } while (cpf.length() != 11);
+        String email;
 
-        System.out.print("\nEmail: ");
-        String email = input.next();
+        do {
+            System.out.println("╠══════════════════════════════╣");
+            System.out.print("║ ➤ Email: ");
+            email = input.next();
+
+            if (!email.contains("@") || !email.contains(".")) {
+                System.out.println("║ ➤ Email inválido, digite novamente. ");
+            }
+            } while (!email.contains("@") || !email.contains("."));
+        System.out.println("╠══════════════════════════════╣");
 
         Cliente pessoa = new Cliente(nome, cpf, email);
 
-        System.out.println("\nEscolha o tipo da conta: ");
-        System.out.println("1 - Conta Corrente");
-        System.out.println("2 - Conta Poupança");
+        System.out.println("║   ESCOLHA O TIPO DA CONTA    ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.println("║ 1 - Conta Corrente           ║");
+        System.out.println("║ 2 - Conta Poupança           ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.print("║ ➤ Opção: ");
         int tipo = input.nextInt();
+        System.out.println("╚══════════════════════════════╝");
 
         Conta conta;
         if (tipo == 1) {
@@ -85,7 +112,9 @@ public class Banco {
         }
 
         contasBancarias.add(conta);
-        System.out.println("Sua conta foi criada com sucesso!");
+        System.out.println("\n╔═════════════════════════════════╗");
+        System.out.println(" Sua conta foi criada com sucesso!");
+        System.out.println("╚═════════════════════════════════╝");
 
         operacoes();
 
@@ -95,6 +124,7 @@ public class Banco {
     private static Conta encontrarConta(int numeroConta){
         Conta conta = null;
         if(contasBancarias.size() > 0){
+
             for(Conta c: contasBancarias) {
                 if(c.getNumeroConta() == numeroConta){
                     conta = c;
