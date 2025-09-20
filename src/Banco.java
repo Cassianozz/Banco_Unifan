@@ -76,7 +76,7 @@ public class Banco {
             System.out.print("║ ➤ CPF: ");
             cpf = input.next();
 
-            if (cpf.length() != 11) {
+            if (cpf != null && cpf.length() != 11) {
                 System.out.println("║ ➤ CPF inválido, digite novamente.");
                 }
             } while (cpf.length() != 11);

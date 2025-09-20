@@ -38,6 +38,10 @@ public class Cliente {
     }
 
 
+
+    public String cpfFormatado() {
+        return String.format("%s.%s.%s-%s", this.cpf.substring(0, 3), this.cpf.substring(3, 6), this.cpf.substring(6, 9), this.cpf.substring(9, 11));
+    }
     @Override
     public String toString() {
         return "models.Cliente [Nome=" + nome + ", CPF=" + cpf + ", Email=" + email + "]";

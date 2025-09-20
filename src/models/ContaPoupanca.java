@@ -10,4 +10,9 @@ public class ContaPoupanca extends Conta {
         setSaldo(getSaldo() + rendimento);
         System.out.println("Rendimento de R$ " + rendimento + " aplicado.");
     }
+
+    @Override
+    public String getTipoConta() {
+        return "Conta Poupança";
+    }
 }

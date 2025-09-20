@@ -15,4 +15,9 @@ public class ContaCorrente extends Conta{
             System.out.println("Saldo insuficiente para tarifa mensal.");
         }
     }
+
+    @Override
+    public String getTipoConta() {
+        return "Conta Corrente";
+    }
 }

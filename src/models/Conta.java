@@ -33,6 +33,8 @@ public abstract class Conta {
         return numeroConta;
     }
 
+    public abstract String getTipoConta();
+
     public void setNumeroConta(int numeroConta) {
         this.numeroConta = numeroConta;
     }
@@ -58,10 +60,11 @@ public abstract class Conta {
     public String toString(){
 
         return "\n╔══════════════════════════════════════╗" +
-         "\n Numero da conta: " + this.getNumeroConta() +
-         "\n Nome: " + this.cliente.getNome() +
-         "\n CPf: " + this.cliente.getCpf() +
+         "\n Número da conta: " + this.getNumeroConta() +
+         "\n Nome do Cliente: " + this.cliente.getNome() +
+         "\n CPf: " + this.cliente.cpfFormatado() +
          "\n Email: " + this.cliente.getEmail() +
+         "\n Tipo da Conta: " + this.getTipoConta() +
          "\n Saldo: " + Utils.doubleToString(this.getSaldo()) +
          "\n Numero do Cartão: " + this.getNumeroCartao() +
          "\n╚══════════════════════════════════════╝" +
