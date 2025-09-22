@@ -33,6 +33,8 @@ public class Banco {
             case 1:
                 if (Login.fazerLogin()) {
                     Banco.operacoes();
+                } else {
+                    menuPrincipal();
                 }
                 break;
             case 2:

@@ -7,36 +7,31 @@ public class Login {
         boolean loginValido;
         String cpf;
         String senha;
-        do {
-            System.out.println("\n╔══════════════════════════════╗");
-            System.out.println("║            LOGIN             ║");
-            System.out.println("╠══════════════════════════════╣");
 
-            System.out.print("║ ➤ CPF: ");
-            Banco.input.nextLine();
+        System.out.println("\n╔══════════════════════════════╗");
+        System.out.println("║            LOGIN             ║");
+        System.out.println("╠══════════════════════════════╣");
+        System.out.print("║ ➤ CPF: ");
+        cpf = Banco.input.nextLine();
 
-            cpf = Banco.input.nextLine();
+        System.out.print("║ ➤ Senha: ");
+        senha = Banco.input.nextLine();
+        System.out.println("╚══════════════════════════════╝");
 
-            System.out.print("║ ➤ Senha: ");
-            senha = Banco.input.nextLine();
+        loginValido = Banco.credenciaisDeAcesso.containsKey(cpf) && Banco.credenciaisDeAcesso.get(cpf).equals(senha);
 
-            System.out.println("╚══════════════════════════════╝");
-
-            loginValido = Banco.credenciaisDeAcesso.containsKey(cpf) && Banco.credenciaisDeAcesso.get(cpf).equals(senha);
-
-            if (!loginValido) {
-                System.out.println("\nUsuário ou senha inválidos. Tente novamente.");
+        if (!loginValido) {
+            System.out.println("\nUsuário ou senha inválidos. Tente novamente.");
+            return false;
+        } else {
+            for (Conta conta: Banco.contasBancarias){
+                if (conta.getCliente().getCpf().equals(cpf)) {
+                    Banco.contaLogada = conta;
+                    break;
+                }
             }
-
-        } while (!loginValido);
-
-        for (Conta conta: Banco.contasBancarias){
-            if (conta.getCliente().getCpf().equals(cpf)) {
-                Banco.contaLogada = conta;
-                break;
-            }
+            System.out.println("\nmodels.Login bem-sucedido!");
         }
-        System.out.println("\nmodels.Login bem-sucedido!");
         return true;
     }
 }
