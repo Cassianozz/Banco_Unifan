@@ -1,3 +1,4 @@
+package app;
 import models.*;
 
 import java.util.ArrayList;
@@ -6,8 +7,8 @@ import java.util.Scanner;
 
 public class Banco {
 
-    static Scanner input = new Scanner(System.in);
-    static ArrayList<Conta> contasBancarias;
+    public static Scanner input = new Scanner(System.in);
+    public static ArrayList<Conta> contasBancarias;
     public static HashMap<String, String> credenciaisDeAcesso = new HashMap<>();
     public static Conta contaLogada;
 
@@ -25,9 +26,8 @@ public class Banco {
         System.out.println("║ 2 - Criar Conta              ║");
         System.out.println("╚══════════════════════════════╝");
         System.out.print("➤ Escolha uma opção: ");
-
-
         int login = input.nextInt();
+        input.nextLine();
 
         switch (login) {
             case 1:
@@ -57,6 +57,7 @@ public class Banco {
         System.out.print("➤ Escolha uma opção: ");
 
         int operacao = input.nextInt();
+        input.nextLine();
 
         switch (operacao){
             case 1:
@@ -106,8 +107,13 @@ public class Banco {
     }
 
     public static void depositar() {
-        System.out.printf("Qual o valor deseja depositar? ");
+        System.out.println("\n╔═════════════════════════════════════════╗");
+        System.out.println("║                DEPOSITO                 ║");
+        System.out.println("╠═════════════════════════════════════════╣");
+        System.out.printf("║ Qual o valor deseja depositar? ");
         Double valorDeposito = input.nextDouble();
+        input.nextLine();
+
         contaLogada.depositar(valorDeposito);
         operacoes();
     }
@@ -115,6 +121,7 @@ public class Banco {
     public static void sacar() {
         System.out.printf("Qual o valor deseja Sacar? ");
         Double valorSaque = input.nextDouble();
+        input.nextLine();
         contaLogada.sacar(valorSaque);
         operacoes();
     }
@@ -125,12 +132,14 @@ public class Banco {
 
         System.out.printf("Informe o numero da Conta do Destinatario: ");
         int numeroContaDestinatario = input.nextInt();
+        input.nextLine();
+
         Conta contaDestinatario = encontrarConta(numeroContaDestinatario);
 
             if (contaDestinatario != null){
                 System.out.printf("Informe o valor da transferencia: ");
                 double valor = input.nextDouble();
-
+                input.nextLine();
                 contaLogada.transferir(contaDestinatario, valor);
             } else {
             System.out.printf("Conta para transferencia não encontrada");
@@ -142,6 +151,7 @@ public class Banco {
         for (Conta conta: contasBancarias){
             System.out.printf(String.valueOf(contaLogada));
         }
+        intervalo();   
         operacoes();
     }
     public static void listarContas(){
@@ -159,4 +169,10 @@ public class Banco {
         contaLogada.imprimirExtrato();
         operacoes();
     }
+
+    public static void intervalo() {
+        System.out.print(" ➤ Pressione ENTER para continuar...");
+        Banco.input.nextLine();
+    }
+
 }

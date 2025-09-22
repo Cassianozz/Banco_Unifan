@@ -1,22 +1,16 @@
-import models.Cliente;
-import models.Conta;
-import models.ContaCorrente;
-import models.ContaPoupanca;
-
+package models;
+import app.Banco;
 
 public class Cadastro {
-
+    private Banco banco;
 
     public static Conta criarConta() {
-
+        String nome;
         System.out.println("\n╔══════════════════════════════╗");
         System.out.println("║        NOVO CADASTRO         ║");
         System.out.println("╠══════════════════════════════╣");
-
-
         System.out.print("║ ➤ Nome: ");
-        Banco.input.nextLine();
-        String nome = Banco.input.nextLine();
+        nome = Banco.input.nextLine();
 
 
         String cpf;
@@ -75,6 +69,8 @@ public class Cadastro {
         System.out.println("\n╔═════════════════════════════════╗");
         System.out.println(" Sua conta foi criada com sucesso!");
         System.out.println("╚═════════════════════════════════╝");
+        Banco.intervalo();
+
 
         for (Conta c: Banco.contasBancarias){
             if (c.getCliente().getCpf().equals(cpf)) {

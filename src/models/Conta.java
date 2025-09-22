@@ -1,4 +1,5 @@
 package models;
+import app.Banco;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -8,7 +9,6 @@ import java.util.Random;
 
 
 public abstract class Conta {
-
     private static int contadorDeContas = 1;
 
     private int numeroConta;
@@ -69,27 +69,35 @@ public abstract class Conta {
          "\n Numero do Cartão: " + this.getNumeroCartao() +
          "\n╚══════════════════════════════════════╝" +
                 "\n";
+
     }
 
     public void depositar(Double valor) {
         if (valor > 0 ){
             setSaldo(getSaldo() + valor);
             registrarMovimento("Depósito: R$ " + valor);
-            System.out.println("Seu depósito foi realizado com sucesso!");
+            System.out.println("║ Seu depósito foi realizado com sucesso!");
         } else{
             System.out.println("Não foi possível realizar o depósito!");
         }
+        System.out.println("╚═════════════════════════════════════════╝");
+        Banco.intervalo();
     }
 
     public void sacar(Double valor) {
         if (valor > 0 && this.getSaldo() >= valor) {
             setSaldo(getSaldo() - valor);
-            registrarMovimento("Saque: R$ " + valor);
-            System.out.println("Saque realizado com sucesso!");
+            System.out.println("\n╔═════════════════════════════════════╗");
+            System.out.println("║                SAQUE                ║");
+            System.out.println("╠═════════════════════════════════════╣");
+            registrarMovimento("║ Saque: R$ " + valor);
+            System.out.println("║ Saque realizado com sucesso!");
         } else {
             registrarMovimento("Tentativa de saque falhou (R$ " + valor + ")");
             System.out.println("Não foi possível realizar o saque");
         }
+        System.out.println("╚══════════════════════════════════════╝");
+        Banco.intervalo();
     }
 
     public void transferir(Conta contaParaDeposito, Double valor) {

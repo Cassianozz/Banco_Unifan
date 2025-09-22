@@ -1,4 +1,6 @@
-import models.Conta;
+package models;
+import app.Banco;
+
 public class Login {
 
     public static boolean fazerLogin() {
@@ -34,7 +36,7 @@ public class Login {
                 break;
             }
         }
-        System.out.println("\nLogin bem-sucedido!");
+        System.out.println("\nmodels.Login bem-sucedido!");
         return true;
     }
 }
