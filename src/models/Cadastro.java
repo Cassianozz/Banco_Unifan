@@ -3,7 +3,6 @@ import app.Banco;
 
 public class Cadastro {
     private Banco banco;
-
     public static Conta criarConta() {
         String nome;
         System.out.println("\n╔══════════════════════════════╗");
@@ -11,7 +10,6 @@ public class Cadastro {
         System.out.println("╠══════════════════════════════╣");
         System.out.print("║ ➤ Nome: ");
         nome = Banco.input.nextLine();
-
 
         String cpf;
         do {

@@ -30,7 +30,7 @@ public class Login {
                     break;
                 }
             }
-            System.out.println("\nmodels.Login bem-sucedido!");
+            System.out.println("\nLogin bem-sucedido!");
         }
         return true;
     }

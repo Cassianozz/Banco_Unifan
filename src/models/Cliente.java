@@ -44,6 +44,6 @@ public class Cliente {
     }
     @Override
     public String toString() {
-        return "models.Cliente [Nome=" + nome + ", CPF=" + cpf + ", Email=" + email + "]";
+        return "[Nome=" + nome + ", CPF=" + cpf + ", Email=" + email + "]";
     }
 }

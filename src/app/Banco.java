@@ -53,60 +53,86 @@ public class Banco {
         System.out.println("║ 3 - Transferir               ║");
         System.out.println("║ 4 - Informação da conta      ║");
         System.out.println("║ 5 - Extrato                  ║");
-        System.out.println("║ 6 - Sair                     ║");
+
+        // Só aparece para Conta Corrente
+        if (contaLogada instanceof ContaCorrente) {
+            System.out.println("║ 6 - Investimentos            ║");
+            System.out.println("║ 7 - Sair                     ║");
+        } else {
+            System.out.println("║ 6 - Sair                     ║");
+        }
+
+
         System.out.println("╚══════════════════════════════╝");
 
         System.out.print("➤ Escolha uma opção: ");
-
         int operacao = input.nextInt();
         input.nextLine();
 
-        switch (operacao){
-            case 1:
-                depositar();
-                break;
-            case 2:
-                sacar();
-                break;
-            case 3:
-                transferir();
-                break;
-            case 4:
-                info();
-                break;
-            case 5:
-                extrato();
-                break;
-            case 6:
-                System.out.println("Até logo!");
-                menuPrincipal();
-                break;
+        if (contaLogada instanceof ContaCorrente) {
+            switch (operacao){
+                case 1: depositar();break;
+                case 2: sacar(); break;
+                case 3: transferir(); break;
+                case 4: info(); break;
+                case 5: extrato(); break;
+                case 6:
+                    ContaInvestimento contaInvest = new ContaInvestimento(
+                            contaLogada.getCliente()
+                    );
+                    contaInvest.setSaldo(contaLogada.getSaldo());
 
+                    contaInvest.menuInvestimentos();
 
-            default:
-                System.out.printf("Opçao invalida!");
-                operacoes();
-                break;
+                    // Atualiza saldo da conta corrente
+                    contaLogada.setSaldo(contaInvest.getSaldo());
+                    operacoes();
+                    break;
+
+                case 7:
+                    System.out.println("Até logo!");
+                    menuPrincipal();
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    operacoes();
+                    break;
+            }
+        } else {
+            switch (operacao){
+                case 1: depositar(); break;
+                case 2: sacar(); break;
+                case 3: transferir(); break;
+                case 4: info(); break;
+                case 5: extrato(); break;
+                case 6:
+                    System.out.println("Até logo!");
+                    menuPrincipal();
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    operacoes();
+                    break;
+            }
         }
     }
+
 
     public static void criarConta() {
         Cadastro.criarConta();
         operacoes();
     }
 
-    private static Conta encontrarConta(int numeroConta){
-        Conta conta = null;
-        if(contasBancarias.size() > 0){
-
-            for(Conta c: contasBancarias) {
-                if(c.getNumeroConta() == numeroConta){
-                    conta = c;
-                }
+    private static Conta encontrarConta(int numeroConta) {
+        for (Conta c : contasBancarias) {
+            if (c.getNumeroConta() == numeroConta) {
+                return c; // achou e retorna direto
             }
         }
-        return conta;
+        System.out.println("Conta com número " + numeroConta + " não encontrada.");
+        return null;
     }
+
 
     public static void depositar() {
         System.out.println("\n╔═════════════════════════════════════════╗");
@@ -176,5 +202,4 @@ public class Banco {
         System.out.print(" ➤ Pressione ENTER para continuar...");
         Banco.input.nextLine();
     }
-
 }
