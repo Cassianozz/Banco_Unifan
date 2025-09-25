@@ -28,11 +28,39 @@ public class Banco {
             System.out.println("╠══════════════════════════════╣");
             System.out.println("║ 1 - Entrar na conta          ║");
             System.out.println("║ 2 - Criar Conta              ║");
+            System.out.println("║ 3 - Sair                     ║");
             System.out.println("╚══════════════════════════════╝");
             System.out.print("➤ Escolha uma opção: ");
 
-            loginStr = input.nextLine();
+            while (!input.hasNextInt()) {
+                System.out.println("➤ Entrada inválida! Digite apenas números.");
+                System.out.print("➤ Escolha uma opção: ");
+                input.next();
+            }
 
+            login = input.nextInt();
+            input.nextLine(); // Limpa a quebra de linha
+
+            switch (login) {
+                case 1:
+                    if (Login.fazerLogin()) {
+                        Banco.operacoes();
+                    } else {
+                        menuPrincipal();
+                    }
+                    break;
+                case 2:
+                    criarConta();
+                    break;
+                case 3:
+                    System.out.println("Até logo!");
+                    break;
+                default:
+                    System.out.println("➤ Opção inválida! Digite de 1 a 3.");
+            }
+
+            /*
+            loginStr = input.nextLine();
             if (loginStr.matches("\\d+")) { // só aceita números
                 login = Integer.parseInt(loginStr);
 
@@ -43,20 +71,9 @@ public class Banco {
             } else {
                 System.out.println("➤ Entrada inválida! Digite apenas números.");
             }
-        } while (login == 0);
+             */
 
-        switch (login) {
-            case 1:
-                if (Login.fazerLogin()) {
-                    Banco.operacoes();
-                } else {
-                    menuPrincipal();
-                }
-                break;
-            case 2:
-                criarConta();
-                break;
-        }
+        } while (login != 3);
     }
 
 
