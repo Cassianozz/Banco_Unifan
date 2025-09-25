@@ -5,21 +5,29 @@ public class Cadastro {
     private Banco banco;
     public static Conta criarConta() {
         String nome;
-        System.out.println("\n╔══════════════════════════════╗");
-        System.out.println("║        NOVO CADASTRO         ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.print("║ ➤ Nome: ");
-        nome = Banco.input.nextLine();
+        do {
+            System.out.println("\n╔══════════════════════════════╗");
+            System.out.println("║        NOVO CADASTRO         ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.print("║ ➤ Nome: ");
+            nome = Banco.input.nextLine();
+            if (!nome.matches("[A-Za-zÀ-ÖØ-öø-ÿ\\s]+")) {
+                System.out.println("║ ➤ Nome inválido! Digite apenas letras.");
+                nome = null; // força repetir
+            }
+        } while (nome == null);
 
         String cpf;
         do {
             System.out.println("╠══════════════════════════════╣");
             System.out.print("║ ➤ CPF (11 dígitos): ");
             cpf = Banco.input.next();
-            if (cpf.length() != 11) {
+            if (!cpf.matches("\\d{11}")) {
                 System.out.println("║ ➤ CPF inválido, digite novamente.");
+                cpf = null; // força repetir
             }
-        } while (cpf.length() != 11);
+        } while (cpf == null);
+
 
 
         Banco.input.nextLine();
@@ -36,25 +44,45 @@ public class Cadastro {
         } while (!email.contains("@") || !email.contains("."));
 
         String senha;
-        System.out.println("╠══════════════════════════════╣");
-        System.out.print("║ ➤ Senha: ");
-        senha = Banco.input.next();
+        do {
+            System.out.println("╠══════════════════════════════╣");
+            System.out.print("║ ➤ Senha (somente números): ");
+            senha = Banco.input.next();
+
+            if (!senha.matches("\\d+")) { // verifica se tem apenas dígitos
+                System.out.println("║ ➤ Senha inválida! Digite apenas números.");
+                senha = null; // força repetir
+            }
+        } while (senha == null);
 
         System.out.println("╠══════════════════════════════╣");
 
         Banco.credenciaisDeAcesso.put(cpf, senha);
         Cliente pessoa = new Cliente(nome, cpf, email);
 
-        System.out.println("║   ESCOLHA O TIPO DA CONTA    ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.println("║ 1 - Conta Corrente           ║");
-        System.out.println("║ 2 - Conta Poupança           ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.print("║ ➤ Opção: ");
-        int tipo = Banco.input.nextInt();
-        System.out.println("╚══════════════════════════════╝");
+        String tipoStr;
+        int tipo = 0;
+        do {
+            System.out.println("║   ESCOLHA O TIPO DA CONTA    ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.println("║ 1 - Conta Corrente           ║");
+            System.out.println("║ 2 - Conta Poupança           ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.print("║ ➤ Opção: ");
+            tipoStr = Banco.input.next();
 
+            if (tipoStr.matches("\\d+")) {
+                tipo = Integer.parseInt(tipoStr);
 
+                if (tipo != 1 && tipo != 2) {
+                    System.out.println("║ ➤ Opção inválida! Digite 1 ou 2.");
+                    tipo = 0;
+                }
+            } else {
+                System.out.println("║ ➤ Entrada inválida! Digite apenas números.");
+            }
+
+        } while (tipo == 0);
         Banco.input.nextLine();
 
         Conta conta;

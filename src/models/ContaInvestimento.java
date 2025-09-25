@@ -18,18 +18,34 @@ public class ContaInvestimento extends Conta {
     }
 
     public void menuInvestimentos() {
-        System.out.println("\n╔══════════════════════════════╗");
-        System.out.println("║       MENU INVESTIMENTOS     ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.println("║ 1 - Criptomoedas             ║");
-        System.out.println("║ 2 - Ações                    ║");
-        System.out.println("║ 3 - Fundos Imobiliários      ║");
-        System.out.println("║ 4 - Voltar                   ║");
-        System.out.println("╚══════════════════════════════╝");
+        String opcaoStr;
+        int opcao = 0;
+        do {
+            System.out.println("\n╔══════════════════════════════╗");
+            System.out.println("║       MENU INVESTIMENTOS     ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.println("║ 1 - Criptomoedas             ║");
+            System.out.println("║ 2 - Ações                    ║");
+            System.out.println("║ 3 - Fundos Imobiliários      ║");
+            System.out.println("║ 4 - Voltar                   ║");
+            System.out.println("╚══════════════════════════════╝");
 
-        System.out.print("➤ Escolha uma opção: ");
-        int opcao = input.nextInt();
-        input.nextLine();
+            System.out.print("➤ Escolha uma opção: ");
+            opcaoStr = input.nextLine();
+
+            if (opcaoStr.matches("\\d+")) {
+                opcao = Integer.parseInt(opcaoStr);
+
+                if (opcao < 1 || opcao > 4) {
+                    System.out.println("➤ Opção inválida! Digite de 1 a 4.");
+                    opcao = 0;
+                }
+            } else {
+                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            }
+
+        } while (opcao == 0);
+
 
         switch (opcao) {
             case 1: investirCriptomoedas(); break;
@@ -44,33 +60,61 @@ public class ContaInvestimento extends Conta {
     }
 
     private void investirCriptomoedas() {
-        System.out.println("\n╔══════════════════════════════╗");
-        System.out.println("║     INVESTIR EM CRIPTO       ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.println("║ 1 - Bitcoin (BTC)            ║");
-        System.out.println("║ 2 - Ethereum (ETH)           ║");
-        System.out.println("║ 3 - Solana (SOL)             ║");
-        System.out.println("║ 4 - Dogecoin (DOGE)          ║");
-        System.out.println("╚══════════════════════════════╝");
+        String opcaoStr;
+        int opcao = 0;
 
-        System.out.print("➤ Escolha a moeda: ");
-        int opcao = input.nextInt();
-        input.nextLine();
+        do {
+            System.out.println("\n╔══════════════════════════════╗");
+            System.out.println("║     INVESTIR EM CRIPTO       ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.println("║ 1 - Bitcoin (BTC)            ║");
+            System.out.println("║ 2 - Ethereum (ETH)           ║");
+            System.out.println("║ 3 - Solana (SOL)             ║");
+            System.out.println("║ 4 - Dogecoin (DOGE)          ║");
+            System.out.println("╚══════════════════════════════╝");
+            System.out.print("➤ Escolha uma opção: ");
+            opcaoStr = input.nextLine();
 
-        String moeda;
-        switch (opcao) {
-            case 1: moeda = "Bitcoin"; break;
-            case 2: moeda = "Ethereum"; break;
-            case 3: moeda = "Solana"; break;
-            case 4: moeda = "Dogecoin"; break;
-            default:
-                System.out.println("Opção inválida!");
-                investirCriptomoedas();
-                return;
-        }
+            if (opcaoStr.matches("\\d+")) {
+                opcao = Integer.parseInt(opcaoStr);
+                if (opcao < 1 || opcao > 4) {
+                    System.out.println("➤ Opção inválida! Digite de 1 a 4.");
+                    opcao = 0;
+                }
+            } else {
+                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            }
+        } while (opcao == 0);
 
-        investirRisco(valorPercentual(-0.5, 2.0), "Criptomoeda: " + moeda);
+        String moeda = switch (opcao) {
+            case 1 -> "Bitcoin";
+            case 2 -> "Ethereum";
+            case 3 -> "Solana";
+            case 4 -> "Dogecoin";
+            default -> ""; // nunca será usado
+        };
+
+        String valorStr;
+        double valorInvestimento = 0;
+        do {
+            System.out.print("Digite o valor que deseja investir: ");
+            valorStr = input.nextLine();
+
+            if (valorStr.matches("\\d+(\\.\\d{1,2})?")) { // aceita decimais
+                valorInvestimento = Double.parseDouble(valorStr);
+                if (valorInvestimento <= 0) {
+                    System.out.println("➤ Valor inválido! Digite um valor maior que zero.");
+                    valorInvestimento = 0;
+                }
+            } else {
+                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            }
+        } while (valorInvestimento == 0);
+
+        investirRisco(valorInvestimento, "Criptomoeda: " + moeda);
     }
+
+
 
     private void investirAcoes() {
         System.out.print("Informe o valor que deseja investir em Ações: ");

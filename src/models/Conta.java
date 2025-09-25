@@ -3,6 +3,7 @@ import app.Banco;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -90,7 +91,7 @@ public abstract class Conta {
             System.out.println("\n╔═════════════════════════════════════╗");
             System.out.println("║                SAQUE                ║");
             System.out.println("╠═════════════════════════════════════╣");
-            registrarMovimento("║ Saque: R$ " + valor);
+            registrarMovimento("Saque: R$ " + valor);
             System.out.println("║ Saque realizado com sucesso!");
         } else {
             registrarMovimento("Tentativa de saque falhou (R$ " + valor + ")");
@@ -105,8 +106,8 @@ public abstract class Conta {
             setSaldo(getSaldo() - valor);
             contaParaDeposito.saldo = contaParaDeposito.getSaldo() + valor;
 
-            registrarMovimento("Transferência enviada: R$ " + valor + " -> models.Conta " + contaParaDeposito.getNumeroConta());
-            contaParaDeposito.registrarMovimento("Transferência recebida: R$ " + valor + " <- models.Conta " + this.getNumeroConta());
+            registrarMovimento("Transferência enviada: R$ " + valor + " -> Conta " + contaParaDeposito.getNumeroConta());
+            contaParaDeposito.registrarMovimento("Transferência recebida: R$ " + valor + " <- Conta " + this.getNumeroConta());
 
             System.out.println("Transferência realizada com sucesso!");
         } else {
@@ -119,11 +120,11 @@ public abstract class Conta {
     }
 
     public void imprimirExtrato() {
-        System.out.println("\n=== Extrato da models.Conta " + numeroConta + " ===");
+        System.out.println("\n=== Extrato da Conta " + numeroConta + " ===");
         for (String movimento : extrato) {
             System.out.println(movimento);
         }
-        System.out.println("Saldo atual: R$ " + saldo);
+        System.out.println("Saldo atual: " + Utils.doubleToString(this.getSaldo()));
     }
 
     public String gerarNumeroCartao() {
@@ -140,10 +141,13 @@ public abstract class Conta {
             
         }
         return numeroCartao.toString();
-    }   
-    public class Utils {
+    }
+    public static class Utils { // precisa ser static se estiver dentro da Conta
 
-        static NumberFormat formatandoValores = new DecimalFormat("R$ #,##00.0");
+        static NumberFormat formatandoValores = new DecimalFormat("R$ #,##0.00"); // duas casas
+        static {
+            ((DecimalFormat) formatandoValores).setRoundingMode(RoundingMode.HALF_UP); // arredonda corretamente
+        }
 
         public static String doubleToString(Double valor){
             return formatandoValores.format(valor);
