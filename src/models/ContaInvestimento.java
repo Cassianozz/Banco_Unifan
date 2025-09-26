@@ -17,8 +17,40 @@ public class ContaInvestimento extends Conta {
         return "Investimento";
     }
 
+    // ===================== MÉTODOS DE LEITURA =====================
+    public static int lerInteiro(String prompt) {
+        int numero = 0;
+        while (true) {
+            System.out.print(prompt);
+            String entrada = input.nextLine();
+            if (entrada.matches("\\d+")) {
+                numero = Integer.parseInt(entrada);
+                break;
+            } else {
+                System.out.println("➤ Entrada inválida! Digite apenas números inteiros.");
+            }
+        }
+        return numero;
+    }
+
+    public static double lerDouble(String prompt) {
+        double numero = 0;
+        while (true) {
+            System.out.print(prompt);
+            String entrada = input.nextLine();
+            if (entrada.matches("\\d+(\\.\\d+)?")) {
+                numero = Double.parseDouble(entrada);
+                if (numero > 0) break;
+                else System.out.println("➤ Valor inválido! Digite um número maior que zero.");
+            } else {
+                System.out.println("➤ Entrada inválida! Digite apenas números (use ponto para decimais).");
+            }
+        }
+        return numero;
+    }
+
+    // ===================== MENU INVESTIMENTOS =====================
     public void menuInvestimentos() {
-        String opcaoStr;
         int opcao = 0;
         do {
             System.out.println("\n╔══════════════════════════════╗");
@@ -30,39 +62,25 @@ public class ContaInvestimento extends Conta {
             System.out.println("║ 4 - Voltar                   ║");
             System.out.println("╚══════════════════════════════╝");
 
-            System.out.print("➤ Escolha uma opção: ");
-            opcaoStr = input.nextLine();
-
-            if (opcaoStr.matches("\\d+")) {
-                opcao = Integer.parseInt(opcaoStr);
-
-                if (opcao < 1 || opcao > 4) {
-                    System.out.println("➤ Opção inválida! Digite de 1 a 4.");
-                    opcao = 0;
-                }
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            opcao = lerInteiro("➤ Escolha uma opção: ");
+            if (opcao < 1 || opcao > 4) {
+                System.out.println("➤ Opção inválida! Digite de 1 a 4.");
+                opcao = 0;
             }
 
         } while (opcao == 0);
 
-
         switch (opcao) {
-            case 1: investirCriptomoedas(); break;
-            case 2: investirAcoes(); break;
-            case 3: investirFundosImobiliarios(); break;
-            case 4: return;
-            default:
-                System.out.println("Opção inválida!");
-                menuInvestimentos();
-                break;
+            case 1 -> investirCriptomoedas();
+            case 2 -> investirAcoes();
+            case 3 -> investirFundosImobiliarios();
+            case 4 -> { return; }
         }
     }
 
+    // ===================== INVESTIMENTOS =====================
     private void investirCriptomoedas() {
-        String opcaoStr;
         int opcao = 0;
-
         do {
             System.out.println("\n╔══════════════════════════════╗");
             System.out.println("║     INVESTIR EM CRIPTO       ║");
@@ -72,17 +90,11 @@ public class ContaInvestimento extends Conta {
             System.out.println("║ 3 - Solana (SOL)             ║");
             System.out.println("║ 4 - Dogecoin (DOGE)          ║");
             System.out.println("╚══════════════════════════════╝");
-            System.out.print("➤ Escolha uma opção: ");
-            opcaoStr = input.nextLine();
 
-            if (opcaoStr.matches("\\d+")) {
-                opcao = Integer.parseInt(opcaoStr);
-                if (opcao < 1 || opcao > 4) {
-                    System.out.println("➤ Opção inválida! Digite de 1 a 4.");
-                    opcao = 0;
-                }
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            opcao = lerInteiro("➤ Escolha uma opção: ");
+            if (opcao < 1 || opcao > 4) {
+                System.out.println("➤ Opção inválida! Digite de 1 a 4.");
+                opcao = 0;
             }
         } while (opcao == 0);
 
@@ -91,77 +103,63 @@ public class ContaInvestimento extends Conta {
             case 2 -> "Ethereum";
             case 3 -> "Solana";
             case 4 -> "Dogecoin";
-            default -> ""; // nunca será usado
+            default -> "";
         };
 
-        String valorStr;
-        double valorInvestimento = 0;
-        do {
-            System.out.print("Digite o valor que deseja investir: ");
-            valorStr = input.nextLine();
+        double valorInvestimento = lerDouble("Digite o valor que deseja investir: ");
 
-            if (valorStr.matches("\\d+(\\.\\d{1,2})?")) { // aceita decimais
-                valorInvestimento = Double.parseDouble(valorStr);
-                if (valorInvestimento <= 0) {
-                    System.out.println("➤ Valor inválido! Digite um valor maior que zero.");
-                    valorInvestimento = 0;
-                }
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
-            }
-        } while (valorInvestimento == 0);
+        if (valorInvestimento > this.getSaldo()) {
+            System.out.println("➤ Saldo insuficiente! Você tem apenas R$ " + this.getSaldo());
+            return;
+        }
 
-        investirRisco(valorInvestimento, "Criptomoeda: " + moeda);
+        double resultado = valorPercentual(-0.5, 1.5, valorInvestimento);
+        investirRisco(resultado, valorInvestimento, "Criptomoeda: " + moeda);
     }
 
-
-
     private void investirAcoes() {
-        System.out.print("Informe o valor que deseja investir em Ações: ");
-        double valor = input.nextDouble();
-        input.nextLine();
-        investirRisco(valorPercentual(-0.3, 1.0, valor), "Ações");
+        double valorInvestimento = lerDouble("Informe o valor que deseja investir em Ações: ");
+
+        if (valorInvestimento > this.getSaldo()) {
+            System.out.println("➤ Saldo insuficiente! Você tem apenas R$ " + this.getSaldo());
+            return;
+        }
+
+        double resultado = valorPercentual(-0.3, 1.0, valorInvestimento);
+        investirRisco(resultado, valorInvestimento, "Ações");
     }
 
     private void investirFundosImobiliarios() {
-        System.out.print("Informe o valor que deseja investir em Fundos Imobiliários: ");
-        double valor = input.nextDouble();
-        input.nextLine();
-        investirRisco(valorPercentual(-0.1, 0.5, valor), "Fundos Imobiliários");
+        double valorInvestimento = lerDouble("Informe o valor que deseja investir em Fundos Imobiliários: ");
+
+        if (valorInvestimento > this.getSaldo()) {
+            System.out.println("➤ Saldo insuficiente! Você tem apenas R$ " + this.getSaldo());
+            return;
+        }
+
+        double resultado = valorPercentual(-0.1, 0.5, valorInvestimento);
+        investirRisco(resultado, valorInvestimento, "Fundos Imobiliários");
     }
 
-    // Método que aplica ganho ou perda baseado na porcentagem
-    private void investirRisco(double resultado, String tipo) {
-        double valorInvestido = resultado - this.getSaldo();
-        if (resultado > this.getSaldo()) {
-            System.out.printf("Lucro obtido em %s: R$ %.2f%n", tipo, resultado - this.getSaldo());
+    // ===================== MÉTODOS DE APOIO =====================
+    private void investirRisco(double resultado, double valorInvestido, String tipo) {
+        double ganhoOuPerda = resultado - (this.getSaldo() - valorInvestido);
+
+        if (ganhoOuPerda > 0) {
+            System.out.printf("Lucro obtido em %s: R$ %.2f%n", tipo, ganhoOuPerda);
+        } else if (ganhoOuPerda < 0) {
+            System.out.printf("Perda ocorrida em %s: R$ %.2f%n", tipo, Math.abs(ganhoOuPerda));
         } else {
-            System.out.printf("Perda ocorrida em %s: R$ %.2f%n", tipo, this.getSaldo() - resultado);
+            System.out.printf("Nenhum ganho em %s.%n", tipo);
         }
+
         this.setSaldo(resultado);
         System.out.printf("Novo saldo: R$ %.2f%n", this.getSaldo());
     }
 
-    // Calcula o valor final baseado em risco percentual
-    private double valorPercentual(double min, double max) {
-        double valor = input.nextDouble();
-        input.nextLine();
-        if (valor > this.getSaldo()) {
-            System.out.println("Saldo insuficiente!");
-            return this.getSaldo(); // mantém saldo sem alteração
-        }
-        this.setSaldo(this.getSaldo() - valor);
+    // Calcula valor final baseado em risco percentual
+    private double valorPercentual(double min, double max, double valorInvestido) {
         double porcentagem = min + (max - min) * random.nextDouble();
-        return this.getSaldo() + valor + (valor * porcentagem);
-    }
-
-    private double valorPercentual(double min, double max, double valor) {
-        if (valor > this.getSaldo()) {
-            System.out.println("Saldo insuficiente!");
-            return this.getSaldo(); // mantém saldo sem alteração
-        }
-        this.setSaldo(this.getSaldo() - valor);
-        double porcentagem = min + (max - min) * random.nextDouble();
-        return this.getSaldo() + valor + (valor * porcentagem);
+        return this.getSaldo() - valorInvestido + valorInvestido + (valorInvestido * porcentagem);
     }
 }
