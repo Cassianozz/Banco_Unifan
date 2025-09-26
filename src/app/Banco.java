@@ -14,14 +14,13 @@ public class Banco {
 
     public static void main(String[] args) {
         contasBancarias = new ArrayList<>();
+        contasDeTeste();
         menuPrincipal();
     }
 
 
     public static void menuPrincipal() {
-        String loginStr;
-        int login = 0;
-
+        int login;
         do {
             System.out.println("\n╔══════════════════════════════╗");
             System.out.println("║        MENU PRINCIPAL        ║");
@@ -30,23 +29,13 @@ public class Banco {
             System.out.println("║ 2 - Criar Conta              ║");
             System.out.println("║ 3 - Sair                     ║");
             System.out.println("╚══════════════════════════════╝");
-            System.out.print("➤ Escolha uma opção: ");
 
-            while (!input.hasNextInt()) {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
-                System.out.print("➤ Escolha uma opção: ");
-                input.next();
-            }
-
-            login = input.nextInt();
-            input.nextLine(); // Limpa a quebra de linha
+            login = lerInteiro("➤ Escolha uma opção: ");
 
             switch (login) {
                 case 1:
                     if (Login.fazerLogin()) {
-                        Banco.operacoes();
-                    } else {
-                        menuPrincipal();
+                        operacoes();
                     }
                     break;
                 case 2:
@@ -56,29 +45,16 @@ public class Banco {
                     System.out.println("Até logo!");
                     break;
                 default:
-                    System.out.println("➤ Opção inválida! Digite de 1 a 3.");
+                    System.out.println("\n╔════════════════════════════════════════════════╗");
+                    System.out.println("➤ Opção inválida! Escolha uma opção entre 1 e 3.");
+                    System.out.println("╚════════════════════════════════════════════════╝");
+
             }
-
-            /*
-            loginStr = input.nextLine();
-            if (loginStr.matches("\\d+")) { // só aceita números
-                login = Integer.parseInt(loginStr);
-
-                if (login < 1 || login > 2) {
-                    System.out.println("➤ Opção inválida! Digite 1 ou 2.");
-                    login = 0; // força repetir
-                }
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
-            }
-             */
-
         } while (login != 3);
     }
 
 
     public static void operacoes() {
-        String operacaoStr;
         int operacao = 0;
 
         do {
@@ -99,17 +75,9 @@ public class Banco {
             }
 
             System.out.println("╚══════════════════════════════╝");
-            System.out.print("➤ Escolha uma opção: ");
-            operacaoStr = input.nextLine();
+            operacao = lerInteiro("➤ Escolha uma opção: ");
 
-            if (operacaoStr.matches("\\d+")) { // só aceita números
-                operacao = Integer.parseInt(operacaoStr);
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
-            }
-        } while (operacao == 0);
-
-        if (contaLogada instanceof ContaCorrente) {
+            if (contaLogada instanceof ContaCorrente) {
             switch (operacao) {
                 case 1: depositar(); break;
                 case 2: sacar(); break;
@@ -125,8 +93,7 @@ public class Banco {
                     break;
                 case 7:
                     System.out.println("Até logo!");
-                    menuPrincipal();
-                    break;
+                    return;
                 default:
                     System.out.println("Opção inválida!");
                     operacoes();
@@ -149,6 +116,8 @@ public class Banco {
                     break;
             }
         }
+
+        } while (true);
     }
 
 
@@ -164,120 +133,123 @@ public class Banco {
                 return c; // achou e retorna direto
             }
         }
-        System.out.println("Conta com número " + numeroConta + " não encontrada.");
+        // System.out.println("Conta com número " + numeroConta + " não encontrada.");
         return null;
     }
 
 
     public static void depositar() {
+        double valorDeposito;
         System.out.println("\n╔═════════════════════════════════════════╗");
         System.out.println("║                DEPÓSITO                 ║");
         System.out.println("╠═════════════════════════════════════════╣");
 
-        String valorStr;
-        double valorDeposito = 0;
-
         do {
-            System.out.print("║ Qual o valor deseja depositar? ");
-            valorStr = input.nextLine();
+            valorDeposito = lerInteiro("║ ➤ Digite um valor para depósito: R$");
 
-            if (valorStr.matches("\\d+(\\.\\d{1,2})?")) {
-                valorDeposito = Double.parseDouble(valorStr);
-                if (valorDeposito <= 0) {
-                    System.out.println("║ ➤ Valor inválido! Digite um valor maior que zero.");
-                    valorDeposito = 0;
-                }
-            } else {
-                System.out.println("║ ➤ Entrada inválida! Digite apenas números.");
+            if (valorDeposito <= 0) {
+                System.out.println("║ ➤ Valor inválido! Digite um valor maior que zero.");
+                valorDeposito = 0;
             }
         } while (valorDeposito <= 0);
 
         contaLogada.depositar(valorDeposito);
-        operacoes();
     }
 
     public static void sacar() {
-        String valorStr;
-        double valorSaque = 0;
-
+        double valorSaque;
+        System.out.println("\n╔═════════════════════════════════════╗");
+        System.out.println("║                SAQUE                ║");
+        System.out.println("╠═════════════════════════════════════╣");
         do {
-            System.out.print("Qual o valor deseja sacar? ");
-            valorStr = input.nextLine();
+            valorSaque = lerInteiro("║ ➤ Digite um valor para saque: R$");
 
-            if (valorStr.matches("\\d+(\\.\\d{1,2})?")) {
-                valorSaque = Double.parseDouble(valorStr);
-                if (valorSaque <= 0) {
-                    System.out.println("➤ Valor inválido! Digite um valor maior que zero.");
-                    valorSaque = 0;
-                }
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
+            if (valorSaque <= 0) {
+                System.out.println("║ ➤ Valor inválido! Digite um valor maior que zero.");
+                valorSaque = 0;
             }
+
         } while (valorSaque <= 0);
 
         contaLogada.sacar(valorSaque);
-        operacoes();
     }
 
     public static void transferir() {
-        String contaStr;
-        int numeroContaDestinatario = 0;
-
-        do {
-            System.out.print("Informe o número da Conta do Destinatário: ");
-            contaStr = input.nextLine();
-
-            if (contaStr.matches("\\d+")) {
-                numeroContaDestinatario = Integer.parseInt(contaStr);
-            } else {
-                System.out.println("➤ Entrada inválida! Digite apenas números.");
-            }
-        } while (numeroContaDestinatario == 0);
+        int numeroContaDestinatario;
+        System.out.println("\n╔═══════════════════════════════════════════════╗");
+        System.out.println("║                  TRANSFERÊNCIA                ║");
+        System.out.println("╠═══════════════════════════════════════════════╣");
+        numeroContaDestinatario = lerInteiro("║ ➤ Informe o número da Conta do Destinatário: ");
+            
 
         Conta contaDestinatario = encontrarConta(numeroContaDestinatario);
 
-        if (contaDestinatario != null) {
-            String valorStr;
+        if (numeroContaDestinatario == contaLogada.getNumeroConta()) {
+            System.out.println("║ ➤ Você não pode fazer transferência para sua própria conta.");
+        } else {
+            if (contaDestinatario != null ) {
             double valor = 0;
 
             do {
-                System.out.print("Informe o valor da transferência: ");
-                valorStr = input.nextLine();
-
-                if (valorStr.matches("\\d+(\\.\\d{1,2})?")) {
-                    valor = Double.parseDouble(valorStr);
-                    if (valor <= 0) {
-                        System.out.println("➤ Valor inválido! Digite um valor maior que zero.");
-                        valor = 0;
-                    }
-                } else {
-                    System.out.println("➤ Entrada inválida! Digite apenas números.");
+                valor = lerInteiro("║ ➤ Informe o valor da transferência: ");
+                
+                if (valor <= 0) {
+                    System.out.println("║ ➤ Valor inválido! Digite um valor maior que zero.");
+                    valor = 0;
                 }
             } while (valor <= 0);
 
             contaLogada.transferir(contaDestinatario, valor);
-        } else {
-            System.out.println("Conta para transferência não encontrada.");
+            } else {
+            System.out.println("║ ➤ Conta para transferência não encontrada.");
+            }
         }
-        operacoes();
+        System.out.println("╚═══════════════════════════════════════════════╝");
     }
 
-
     public static void info() {
-        for (Conta conta: contasBancarias){
-            System.out.printf(String.valueOf(contaLogada));
-        }
+        System.out.printf(String.valueOf(contaLogada));
         intervalo();   
-        operacoes();
     }
 
     public static void extrato() {
+        
         contaLogada.imprimirExtrato();
-        operacoes();
     }
 
     public static void intervalo() {
         System.out.print(" ➤ Pressione ENTER para continuar...");
         Banco.input.nextLine();
+    }
+
+    public static int lerInteiro(String promt) {
+
+        while (true) {
+            System.out.print(promt);
+            
+            if (input.hasNextInt()) {
+                int numero = input.nextInt();
+                input.nextLine();
+                return numero;
+            } else {
+                System.out.println("║");
+                System.out.println("║ ➤ Entrada inválida! Digite apenas números.");
+                System.out.println("║");
+                input.next();
+            }
+        }
+    }
+
+    public static void contasDeTeste() {
+        // --- Cliente 1: Conta Corrente ---
+        Cliente cliente1 = new Cliente("danilo Teste", "11111111111", "joao@teste.com");
+        Conta contaCorrente = new ContaCorrente(cliente1);
+        
+        // Define um saldo inicial para facilitar
+        contaCorrente.setSaldo(500.00); 
+
+        // Adiciona à lista de contas e credenciais
+        contasBancarias.add(contaCorrente);
+        credenciaisDeAcesso.put("11111111111", "1234"); // CPF e Senha
     }
 }

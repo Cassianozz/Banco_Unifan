@@ -10,6 +10,7 @@ import java.util.Random;
 
 
 public abstract class Conta {
+    
     private static int contadorDeContas = 1;
 
     private int numeroConta;
@@ -25,7 +26,7 @@ public abstract class Conta {
         contadorDeContas += 1;
         this.extrato = new ArrayList<>();
         this.numeroCartao = this.gerarNumeroCartao();
-        registrarMovimento("Conta criada com sucesso!");
+        registrarMovimento("║ Conta criada com sucesso!");
 
 
     }
@@ -76,28 +77,25 @@ public abstract class Conta {
     public void depositar(Double valor) {
         if (valor > 0 ){
             setSaldo(getSaldo() + valor);
-            registrarMovimento("Depósito: R$ " + valor);
-            System.out.println("║ Seu depósito foi realizado com sucesso!");
+            registrarMovimento("║ Depósito: R$ " + valor);
+            System.out.println("║ Seu depósito de R$" +valor + " foi realizado com sucesso!");
         } else{
             System.out.println("Não foi possível realizar o depósito!");
         }
-        System.out.println("╚═════════════════════════════════════════╝");
+        System.out.println("╚════════════════════════════════════════╝");
         Banco.intervalo();
     }
 
     public void sacar(Double valor) {
         if (valor > 0 && this.getSaldo() >= valor) {
             setSaldo(getSaldo() - valor);
-            System.out.println("\n╔═════════════════════════════════════╗");
-            System.out.println("║                SAQUE                ║");
-            System.out.println("╠═════════════════════════════════════╣");
-            registrarMovimento("Saque: R$ " + valor);
-            System.out.println("║ Saque realizado com sucesso!");
+            registrarMovimento("║ Saque: R$ " + valor);
+            System.out.println("║ Saque de R$" +valor + " realizado com sucesso!");
         } else {
-            registrarMovimento("Tentativa de saque falhou (R$ " + valor + ")");
-            System.out.println("Não foi possível realizar o saque");
+            registrarMovimento("║ Tentativa de saque falhou (R$ " + valor + ")");
+            System.out.println("║ ➤ Saldo insuficiente para saque.");
         }
-        System.out.println("╚══════════════════════════════════════╝");
+        System.out.println("╚═════════════════════════════════════╝");
         Banco.intervalo();
     }
 
@@ -106,25 +104,32 @@ public abstract class Conta {
             setSaldo(getSaldo() - valor);
             contaParaDeposito.saldo = contaParaDeposito.getSaldo() + valor;
 
-            registrarMovimento("Transferência enviada: R$ " + valor + " -> Conta " + contaParaDeposito.getNumeroConta());
-            contaParaDeposito.registrarMovimento("Transferência recebida: R$ " + valor + " <- Conta " + this.getNumeroConta());
+            registrarMovimento("║ Transferência enviada: R$ " + valor + " -> Conta " + contaParaDeposito.getNumeroConta());
+            contaParaDeposito.registrarMovimento("║ Transferência recebida: R$ " + valor + " <- Conta " + this.getNumeroConta());
 
-            System.out.println("Transferência realizada com sucesso!");
+            System.out.println("║ ➤ Transferência realizada com sucesso!");
         } else {
-            registrarMovimento("Falha na transferência de R$ " + valor);
-            System.out.println("Não foi possível realizar a transferência");
+            registrarMovimento("║ Falha na transferência de R$ " + valor);
+            System.out.println("║ ➤ Saldo Insuficiente. Não foi possível realizar a transferência");
         }
+        Banco.intervalo();
     }
+
     private void registrarMovimento(String descricao) {
         extrato.add(descricao);
     }
 
     public void imprimirExtrato() {
-        System.out.println("\n=== Extrato da Conta " + numeroConta + " ===");
+        System.out.println("\n╔══════════════════════════════════════════════════╗");
+        System.out.println("║                EXTRATO DA CONTA " + getNumeroConta()+"                ║");
+        System.out.println("╠══════════════════════════════════════════════════╣");
         for (String movimento : extrato) {
             System.out.println(movimento);
         }
-        System.out.println("Saldo atual: " + Utils.doubleToString(this.getSaldo()));
+        System.out.println("║ Saldo atual: " + Utils.doubleToString(this.getSaldo()));
+        System.out.println("╚══════════════════════════════════════════════════╝");
+
+        Banco.intervalo();
     }
 
     public String gerarNumeroCartao() {

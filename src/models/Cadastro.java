@@ -2,8 +2,9 @@ package models;
 import app.Banco;
 
 public class Cadastro {
-    private Banco banco;
+    
     public static Conta criarConta() {
+        
         String nome;
         do {
             System.out.println("\n╔══════════════════════════════╗");
@@ -28,10 +29,7 @@ public class Cadastro {
             }
         } while (cpf == null);
 
-
-
         Banco.input.nextLine();
-
 
         String email;
         do {
@@ -55,35 +53,32 @@ public class Cadastro {
             }
         } while (senha == null);
 
-        System.out.println("╠══════════════════════════════╣");
+        System.out.println("╚══════════════════════════════╝");
 
         Banco.credenciaisDeAcesso.put(cpf, senha);
         Cliente pessoa = new Cliente(nome, cpf, email);
 
-        String tipoStr;
+        // CONTA TESTE
+        
+       
         int tipo = 0;
         do {
+            System.out.println("\n╔══════════════════════════════╗");
             System.out.println("║   ESCOLHA O TIPO DA CONTA    ║");
             System.out.println("╠══════════════════════════════╣");
             System.out.println("║ 1 - Conta Corrente           ║");
             System.out.println("║ 2 - Conta Poupança           ║");
             System.out.println("╠══════════════════════════════╣");
-            System.out.print("║ ➤ Opção: ");
-            tipoStr = Banco.input.next();
+            tipo = Banco.lerInteiro("║ ➤ Opção: ");
 
-            if (tipoStr.matches("\\d+")) {
-                tipo = Integer.parseInt(tipoStr);
-
-                if (tipo != 1 && tipo != 2) {
-                    System.out.println("║ ➤ Opção inválida! Digite 1 ou 2.");
-                    tipo = 0;
-                }
-            } else {
-                System.out.println("║ ➤ Entrada inválida! Digite apenas números.");
-            }
-
+            
+            if (tipo != 1 && tipo != 2) {
+                System.out.println("║ ➤ Opção inválida! Digite 1 ou 2.");
+                tipo = 0;
+            }     
         } while (tipo == 0);
-        Banco.input.nextLine();
+        System.out.println("╚══════════════════════════════╝");
+
 
         Conta conta;
         if (tipo == 1) {

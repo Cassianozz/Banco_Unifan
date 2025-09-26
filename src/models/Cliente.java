@@ -1,7 +1,6 @@
 package models;
 
 public class Cliente {
-    private static int counter = 1;
     private String nome;
     private String cpf;
     private String email;
